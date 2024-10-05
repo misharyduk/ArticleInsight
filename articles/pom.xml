@@ -12,7 +12,7 @@
 	<artifactId>articles</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>articles</name>
-	<description>Artcles Microservice for Article Insight</description>
+	<description>Articles Microservice for Article Insight</description>
 	<url/>
 	<licenses>
 		<license/>

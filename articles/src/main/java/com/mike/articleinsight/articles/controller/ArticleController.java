@@ -4,7 +4,6 @@ import com.mike.articleinsight.articles.dto.ArticleRequestDto;
 import com.mike.articleinsight.articles.dto.ArticleResponseDto;
 import com.mike.articleinsight.articles.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

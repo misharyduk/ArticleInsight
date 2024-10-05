@@ -14,16 +14,16 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_sequence_generator")
     @Id
     private Long id;
-    @Column(name = "title", insertable = false)
+    @Column(name = "article_title", insertable = false)
     private String title;
-    @Column(name = "text", columnDefinition = "TEXT", updatable = false)
+    @Column(name = "article_text", columnDefinition = "TEXT", updatable = false)
     private String text;
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "keyword", joinColumns = @JoinColumn(name = "article_id"))
-    @Column(name = "keyword", insertable = false)
+    @CollectionTable(name = "article_keyword", joinColumns = @JoinColumn(name = "article_id"))
+    @Column(name = "article_keyword")
     private List<String> keywords;
-    @Column(name = "author", updatable = false)
+    @Column(name = "article_author", updatable = false)
     private String author;
-    @Column(name = "publishing_date", updatable = false)
+    @Column(name = "article_publishing_date", updatable = false)
     private Date publishingDate;
 }

@@ -3,4 +3,23 @@ server:
 spring:
   application:
     name: articles
+  datasource:
+    url: jdbc:postgresql://localhost:5432/articleinsightdb
+    username: mike
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        orm:
+          jdbc:
+            bind: trace

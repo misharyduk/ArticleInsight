@@ -10,6 +10,7 @@ import com.mike.articleinsight.articles.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,6 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Long createArticle(ArticleRequestDto articleRequestDto) {
         Article article = new Article();
         ArticleMapper.mapRequestDtoToEntity(articleRequestDto, article);
+        article.setPublishingDate(new Date());
         articleRepository.save(article);
         return article.getId();
     }

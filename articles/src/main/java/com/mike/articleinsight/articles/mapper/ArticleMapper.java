@@ -10,15 +10,16 @@ public class ArticleMapper {
                 .id(article.getId())
                 .title(article.getTitle())
                 .text(article.getText())
-                .keywords(article.getKeywords())
+                .category(article.getCategory())
                 .author(article.getAuthor())
                 .publishingDate(article.getPublishingDate())
                 .build();
     }
 
     public static void mapRequestDtoToEntity(ArticleRequestDto articleRequestDto, Article article){
+        article.setTitle(articleRequestDto.getTitle());
         article.setText(articleRequestDto.getText());
+        article.setCategory(articleRequestDto.getCategory());
         article.setAuthor(articleRequestDto.getAuthor());
-        article.setPublishingDate(articleRequestDto.getPublishingDate());
     }
 }

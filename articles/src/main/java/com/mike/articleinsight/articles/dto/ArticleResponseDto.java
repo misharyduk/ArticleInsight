@@ -16,5 +16,7 @@ public class ArticleResponseDto {
     private String category;
     private String author;
     private Date publishingDate;
+    private Long numberOfLikes;
+    private Long numberOfComments;
 
 }

@@ -7,6 +7,7 @@ import com.mike.articleinsight.articles.exception.ResourceNotFoundException;
 import com.mike.articleinsight.articles.mapper.ArticleMapper;
 import com.mike.articleinsight.articles.repo.ArticleRepository;
 import com.mike.articleinsight.articles.service.ArticleService;
+import com.mike.articleinsight.articles.service.feign_client.review.ReviewFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,15 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReviewFeignClient reviewFeignClient;
 
     @Override
     public List<ArticleResponseDto> getArticles() {
         List<Article> allArticles = articleRepository.findAll();
         return allArticles.stream()
                 .map(ArticleMapper::mapEntityToResponseDto)
+                .peek(a -> a.setNumberOfLikes(reviewFeignClient.countLikesByArticleId(a.getId()).getBody()))
+                .peek(a -> a.setNumberOfComments(reviewFeignClient.countCommentsByArticleId(a.getId()).getBody()))
                 .toList();
     }
 
@@ -31,7 +35,10 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponseDto getArticleById(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Article", "id", String.valueOf(id)));
-        return ArticleMapper.mapEntityToResponseDto(article);
+        ArticleResponseDto responseDto = ArticleMapper.mapEntityToResponseDto(article);
+        responseDto.setNumberOfLikes(reviewFeignClient.countLikesByArticleId(article.getId()).getBody());
+        responseDto.setNumberOfComments(reviewFeignClient.countCommentsByArticleId(article.getId()).getBody());
+        return responseDto;
     }
 
     @Override

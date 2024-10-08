@@ -18,10 +18,8 @@ public class Article {
     private String title;
     @Column(name = "article_text", columnDefinition = "TEXT", updatable = false)
     private String text;
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "article_keyword", joinColumns = @JoinColumn(name = "article_id"))
-    @Column(name = "article_keyword")
-    private List<String> keywords;
+    @Column(name = "article_category")
+    private String category;
     @Column(name = "article_author", updatable = false)
     private String author;
     @Column(name = "article_publishing_date", updatable = false)

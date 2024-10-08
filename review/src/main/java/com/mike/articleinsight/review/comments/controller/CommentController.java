@@ -22,6 +22,12 @@ public class CommentController {
         return ResponseEntity.ok(commentsDto);
     }
 
+    @GetMapping("/articles/{articleId}/count")
+    public ResponseEntity<Long> countCommentsByArticleId(@PathVariable("articleId") Long articleId){
+        Long numberOfComments = commentService.countCommentsByArticleId(articleId);
+        return ResponseEntity.ok(numberOfComments);
+    }
+
     @PostMapping
     public ResponseEntity<String> postComment(@RequestBody CommentRequestDto commentRequestDto){
         commentService.postComment(commentRequestDto);

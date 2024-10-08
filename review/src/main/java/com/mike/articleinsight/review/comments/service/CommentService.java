@@ -9,4 +9,6 @@ public interface CommentService {
     List<CommentResponseDto> getCommentsByArticleId(Long articleId);
 
     void postComment(CommentRequestDto commentRequestDto);
+
+    Long countCommentsByArticleId(Long articleId);
 }

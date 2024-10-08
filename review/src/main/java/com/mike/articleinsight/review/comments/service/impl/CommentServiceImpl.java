@@ -33,4 +33,9 @@ public class CommentServiceImpl implements CommentService {
         comment.setPublishDate(new Date());
         commentRepository.save(comment);
     }
+
+    @Override
+    public Long countCommentsByArticleId(Long articleId) {
+        return commentRepository.countByArticleId(articleId);
+    }
 }

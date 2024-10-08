@@ -31,4 +31,9 @@ public class LikeServiceImpl implements LikeService {
         LikeMapper.mapDtoToEntity(likeRequestDto, like);
         likeRepository.save(like);
     }
+
+    @Override
+    public Long countLikesByArticleId(Long articleId) {
+        return likeRepository.countByArticleId(articleId);
+    }
 }

@@ -9,4 +9,6 @@ public interface LikeService {
     List<LikeResponseDto> getLikesByArticleId(Long articleId);
 
     void addLike(LikeRequestDto likeRequestDto);
+
+    Long countLikesByArticleId(Long articleId);
 }

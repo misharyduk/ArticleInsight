@@ -22,6 +22,12 @@ public class LikeController {
         return ResponseEntity.ok(likes);
     }
 
+    @GetMapping("/articles/{articleId}/count")
+    public ResponseEntity<Long> countLikesByArticleId(@PathVariable("articleId") Long articleId){
+        Long numberOfLikes = likeService.countLikesByArticleId(articleId);
+        return ResponseEntity.ok(numberOfLikes);
+    }
+
     @PostMapping
     public ResponseEntity<String> addLike(@RequestBody LikeRequestDto likeRequestDto){
         likeService.addLike(likeRequestDto);

@@ -1,8 +1,8 @@
 server:
-  port: 8091
+  port: 8092
 spring:
   application:
-    name: articles
+    name: review
   datasource:
     url: jdbc:postgresql://localhost:5432/articleinsightdb
     username: mike
@@ -12,8 +12,8 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
         show_sql: true
+        format_sql: true
 
 logging:
   level:
@@ -43,6 +43,6 @@ management:
       enabled: true
 
 info:
-  articles:
-    microservice-name: articles-ms
+  review:
+    microservice-name: review-ms
     version: "v1.0.0"

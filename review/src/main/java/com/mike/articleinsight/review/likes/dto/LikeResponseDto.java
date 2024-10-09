@@ -1,0 +1,11 @@
+package com.mike.articleinsight.review.likes.dto;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class LikeResponseDto {
+    private Long likeId;
+    private String authorOfLike;
+}

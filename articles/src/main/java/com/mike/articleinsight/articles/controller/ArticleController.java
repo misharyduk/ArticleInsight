@@ -2,6 +2,7 @@ package com.mike.articleinsight.articles.controller;
 
 import com.mike.articleinsight.articles.dto.ArticleRequestDto;
 import com.mike.articleinsight.articles.dto.ArticleResponseDto;
+import com.mike.articleinsight.articles.dto.SearchRequestDto;
 import com.mike.articleinsight.articles.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,24 @@ public class ArticleController {
     public ResponseEntity<String> deleteArticle(@PathVariable("id") Long id){
         articleService.deleteArticleById(id);
         return ResponseEntity.ok("Article has been successfully deleted");
+    }
+
+    @GetMapping("/top/comments")
+    public ResponseEntity<List<ArticleResponseDto>> getSortedArticlesByNumberOfComments(){
+        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfCommentsDesc();
+        return ResponseEntity.ok(articlesDto);
+    }
+
+    @GetMapping("/top/likes")
+    public ResponseEntity<List<ArticleResponseDto>> getSortedArticlesByNumberOfLikes(){
+        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfLikesDesc();
+        return ResponseEntity.ok(articlesDto);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ArticleResponseDto>> searchArticlesByField(@RequestBody SearchRequestDto searchRequestDto){
+        List<ArticleResponseDto> articlesDto = articleService.searchArticlesByField(searchRequestDto);
+        return ResponseEntity.ok(articlesDto);
     }
 
 }

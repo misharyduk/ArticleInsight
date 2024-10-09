@@ -1,0 +1,48 @@
+server:
+  port: 8091
+spring:
+  application:
+    name: articles
+  datasource:
+    url: jdbc:postgresql://localhost:5432/articleinsightdb
+    username: mike
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        orm:
+          jdbc:
+            bind: trace
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    info:
+      enabled: true
+
+info:
+  articles:
+    microservice-name: articles-ms
+    version: "v1.0.0"

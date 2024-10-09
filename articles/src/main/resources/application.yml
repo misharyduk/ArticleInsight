@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/articleinsightdb
     username: mike
-    password: ${DB_PASSWORD}
+    password: password
   jpa:
     hibernate:
       ddl-auto: create

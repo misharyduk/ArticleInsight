@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ReviewFeignClient {
 
     // Comments API
-    @GetMapping("/articles/{articleId}/count")
+    @GetMapping("/api/v1/review/comments/articles/{articleId}/count")
     ResponseEntity<Long> countCommentsByArticleId(@PathVariable("articleId") Long articleId);
 
     // Likes API
-    @GetMapping("/articles/{articleId}/count")
+    @GetMapping("/api/v1/review/likes/articles/{articleId}/count")
     ResponseEntity<Long> countLikesByArticleId(@PathVariable("articleId") Long articleId);
 
 }

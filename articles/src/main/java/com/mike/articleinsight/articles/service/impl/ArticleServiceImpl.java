@@ -11,6 +11,7 @@ import com.mike.articleinsight.articles.service.feign_client.review.ReviewFeignC
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -55,5 +56,19 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Article", "id", String.valueOf(id)));
         articleRepository.delete(article);
+    }
+
+    @Override
+    public List<ArticleResponseDto> getSortedArticlesByNumberOfCommentsAsc() {
+        return getArticles().stream()
+                .sorted((a1, a2) -> a1.getNumberOfComments().compareTo(a2.getNumberOfComments()))
+                .toList();
+    }
+
+    @Override
+    public List<ArticleResponseDto> getSortedArticlesByNumberOfLikesAsc() {
+        return getArticles().stream()
+                .sorted((a1, a2) -> a1.getNumberOfLikes().compareTo(a2.getNumberOfLikes()))
+                .toList();
     }
 }

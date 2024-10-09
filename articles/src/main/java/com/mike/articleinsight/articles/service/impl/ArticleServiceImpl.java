@@ -59,14 +59,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponseDto> getSortedArticlesByNumberOfCommentsAsc() {
+    public List<ArticleResponseDto> getSortedArticlesByNumberOfCommentsDesc() {
         return getArticles().stream()
                 .sorted((a1, a2) -> a2.getNumberOfComments().compareTo(a1.getNumberOfComments()))
                 .toList();
     }
 
     @Override
-    public List<ArticleResponseDto> getSortedArticlesByNumberOfLikesAsc() {
+    public List<ArticleResponseDto> getSortedArticlesByNumberOfLikesDesc() {
         return getArticles().stream()
                 .sorted((a1, a2) -> a2.getNumberOfLikes().compareTo(a1.getNumberOfLikes()))
                 .toList();

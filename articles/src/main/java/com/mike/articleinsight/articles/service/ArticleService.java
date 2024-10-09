@@ -15,8 +15,8 @@ public interface ArticleService {
 
     void deleteArticleById(Long id);
 
-    List<ArticleResponseDto> getSortedArticlesByNumberOfCommentsAsc();
+    List<ArticleResponseDto> getSortedArticlesByNumberOfCommentsDesc();
 
-    List<ArticleResponseDto> getSortedArticlesByNumberOfLikesAsc();
+    List<ArticleResponseDto> getSortedArticlesByNumberOfLikesDesc();
 
 }

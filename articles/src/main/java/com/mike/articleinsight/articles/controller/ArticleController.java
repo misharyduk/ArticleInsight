@@ -42,13 +42,13 @@ public class ArticleController {
 
     @GetMapping("/top/comments")
     public ResponseEntity<List<ArticleResponseDto>> getSortedArticlesByNumberOfComments(){
-        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfCommentsAsc();
+        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfCommentsDesc();
         return ResponseEntity.ok(articlesDto);
     }
 
     @GetMapping("/top/likes")
     public ResponseEntity<List<ArticleResponseDto>> getSortedArticlesByNumberOfLikes(){
-        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfLikesAsc();
+        List<ArticleResponseDto> articlesDto = articleService.getSortedArticlesByNumberOfLikesDesc();
         return ResponseEntity.ok(articlesDto);
     }
 

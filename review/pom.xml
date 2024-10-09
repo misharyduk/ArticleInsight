@@ -14,6 +14,7 @@
 	<name>review</name>
 	<description>Review Microservice for Article Insight</description>
 	<url/>
+	<packaging>jar</packaging>
 	<licenses>
 		<license/>
 	</licenses>

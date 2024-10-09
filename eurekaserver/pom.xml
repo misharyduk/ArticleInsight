@@ -14,7 +14,8 @@
 	<name>eurekaserver</name>
 	<description>Eureka Server for Article Insight</description>
 	<url/>
-	<licenses>
+    <packaging>jar</packaging>
+    <licenses>
 		<license/>
 	</licenses>
 	<developers>

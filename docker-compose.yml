@@ -6,7 +6,7 @@ services:
       - "5432:5432"
     volumes:
       - articleinsight-postgres-data:/var/lib/postgresql/data
-      - ./create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
+      - ./database_connection/create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
     environment:
       POSTGRES_USER: mike
       POSTGRES_PASSWORD: password
@@ -25,6 +25,42 @@ services:
       - articleinsight-pgadmin-data:/var/lib/pgadmin
     ports:
       - "5050:80"
+    networks:
+      - articleinsight-network
+  
+  articles-ms:
+    container_name: articles-ms
+    image: mykhailorudyk/articles:v1
+    ports:
+      - "8091:8091"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - artileinsight-network
+
+  review-ms:
+    container_name: review-ms
+    image: mykhailorudyk/review:v1
+    ports:
+      - "8092:8092"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - articleinsight-network
+
+  eurekaserver:
+    container_name: eurekaserver
+    image: mykhailorudyk/eurekaserver:v1
+    ports:
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
     networks:
       - articleinsight-network
 

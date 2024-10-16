@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: review
+  profiles:
+    active: "dev"
+  config:
+    import:
+      - "optional:configserver:http://localhost:8071/"
   datasource:
     url: jdbc:postgresql://localhost:5432/articleinsightdb
     username: mike
@@ -38,11 +43,9 @@ management:
     web:
       exposure:
         include: "*"
+  info:
+    env:
+      enabled: true
   endpoint:
     info:
       enabled: true
-
-info:
-  review:
-    microservice-name: review-ms
-    version: "v1.0.0"

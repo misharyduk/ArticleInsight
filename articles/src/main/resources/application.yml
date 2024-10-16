@@ -3,6 +3,15 @@ server:
 spring:
   application:
     name: articles
+  profiles:
+    active:
+      - "dev"
+  config:
+    import:
+      - "application_prod.yml"
+      - "application_qa.yml"
+      - "application_dev.yml"
+      - "optional:configserver:http://localhost:8071/"
   datasource:
     url: jdbc:postgresql://localhost:5432/articleinsightdb
     username: mike
@@ -37,12 +46,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health, info
+  info:
+    env:
+      enabled: true
   endpoint:
     info:
       enabled: true
-
-info:
-  articles:
-    microservice-name: articles-ms
-    version: "v1.0.0"
+      

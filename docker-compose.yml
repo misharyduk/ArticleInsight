@@ -28,41 +28,62 @@ services:
     networks:
       - articleinsight-network
   
-  articles-ms:
-    container_name: articles-ms
-    image: mykhailorudyk/articles:v1
+  articleinsight-rabbitmq:
+    container_name: articleinsight-rabbitmq
+    image: rabbitmq
     ports:
-      - "8091:8091"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - artileinsight-network
-
-  review-ms:
-    container_name: review-ms
-    image: mykhailorudyk/review:v1
-    ports:
-      - "8092:8092"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - articleinsight-network
 
-  eurekaserver:
-    container_name: eurekaserver
-    image: mykhailorudyk/eurekaserver:v1
-    ports:
-      - "8761:8761"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - articleinsight-network
+  # articles-ms:
+  #   container_name: articles-ms
+  #   image: mykhailorudyk/articles:v1
+  #   ports:
+  #     - "8091:8091"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - artileinsight-network
+
+  # review-ms:
+  #   container_name: review-ms
+  #   image: mykhailorudyk/review:v1
+  #   ports:
+  #     - "8092:8092"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
+
+  # eurekaserver:
+  #   container_name: eurekaserver
+  #   image: mykhailorudyk/eurekaserver:v1
+  #   ports:
+  #     - "8761:8761"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
+  
+  # configserver:
+  #   container_name: configserver
+  #   image: mykhailorudyk/configserver:v1
+  #   ports:
+  #     - "8071:8071"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
 
 volumes:
   articleinsight-postgres-data:

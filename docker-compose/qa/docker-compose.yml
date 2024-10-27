@@ -1,0 +1,127 @@
+services:
+  articleinsight-postgres:
+    container_name: articleinsight-postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - articleinsight-postgres-data:/var/lib/postgresql/data
+      - ./database_connection:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: mike
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      PGUSER: mike
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 20s
+      retries: 25
+      start_period: 30s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+  
+  articleinsight-pgadmin:
+    container_name: articleinsight-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - articleinsight-pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+  
+  articles-ms:
+    container_name: articles-ms
+    image: mykhailorudyk/articles:v3
+    ports:
+      - "8091:8091"
+    environment:
+      SPRING_APPLICATION_NAME: "articles"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  review-ms:
+    container_name: review-ms
+    image: mykhailorudyk/review:v3
+    ports:
+      - "8092:8092"
+    environment:
+      SPRING_APPLICATION_NAME: "review"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+
+  eurekaserver:
+    container_name: eurekaserver
+    image: mykhailorudyk/eurekaserver:v3
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 20s
+      retries: 25
+      start_period: 30s
+    depends_on: 
+      configserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+  
+  configserver:
+    container_name: configserver
+    image: mykhailorudyk/configserver:v3
+    ports:
+      - "8071:8071"
+    environment:
+      SPRING_APPLICATION_NAME: "configserver"
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1i"
+      interval: 20s
+      timeout: 20s
+      retries: 25
+      start_period: 30s
+    depends_on:
+      articleinsight-rabbitmq:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+  articleinsight-rabbitmq:
+    container_name: articleinsight-rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 20s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+      
+volumes:
+  articleinsight-postgres-data:
+  articleinsight-pgadmin-data:
+
+networks:
+  articleinsight-network:
+    driver: bridge

@@ -1,0 +1,32 @@
+services:
+  network-deploy-service:
+    networks:
+      - articleinsight-network
+  
+  microservice-base-config: # for all microservices
+    extends:
+      service: network-deploy-service
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_RABBITMQ_HOST: "articleinsight-rabbitmq"
+
+  microservice-configserver-config: # for business microservices
+    extends:
+      service: microservice-base-config
+    depends_on: 
+      configserver:
+        condition: service_healthy
+      articleinsight-postgres:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://articleinsight-postgres:5432/mike"
+      EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE: http://eurekaserver:8761/eureka/
+      SPRING_DATASOURCE_USERNAME: mike
+      SPRING_DATASOURCE_PASSWORD: password

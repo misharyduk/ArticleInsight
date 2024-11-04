@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-deployment
+  labels:
+    app: apigateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigateway
+  template:
+    metadata:
+      labels:
+        app: apigateway
+    spec:
+      containers:
+      - name: apigateway
+        image: mykhailorudyk/apigateway:v4
+        port:
+        - containerPort: 8072
+        env:
+        - name: SPRING_APPLICATION_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: APIGATEWAY_APPLICATION_NAME
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_PROFILES_ACTIVE
+        - name: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+        - name: SPRING_CONFIG_IMPORT
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_CONFIG_IMPORT
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+spec:
+  selector:
+    app: apigateway
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8072
+    targetPort: 8072

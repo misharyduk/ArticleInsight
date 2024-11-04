@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: articleinsight-configmap
+data:
+  SPRING_PROFILES_ACTIVE: default
+  SPRING_RABBITMQ_HOST: "articleinsight-rabbitmq"
+  SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071/"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://articleinsight-postgres:5432/mike"
+  EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE: http://eurekaserver:8761/eureka/
+  SPRING_DATASOURCE_USERNAME: mike
+  SPRING_DATASOURCE_PASSWORD: password
+  ARTICLES_APPLICATION_NAME: "articles"
+  REVIEW_APPLICATION_NAME: "review"
+  EUREKASERVER_APPLICATION_NAME: "eurekaserver"
+  CONFIGSERVER_APPLICATION_NAME: "configserver"
+  APIGATEWAY_APPLICATION_NAME: "apigateway"
+  

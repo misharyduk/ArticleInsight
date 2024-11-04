@@ -39,7 +39,7 @@ services:
   
   articles-ms:
     container_name: articles-ms
-    image: mykhailorudyk/articles:v3
+    image: mykhailorudyk/articles:v4
     ports:
       - "8091:8091"
     environment:
@@ -47,7 +47,7 @@ services:
     healthcheck:
       test: "curl --fail --silent localhost:8091/actuator/health/readiness | grep UP || exit 1"
       timeout: 20s
-      interval: 20s
+      interval: 30s
       retries: 30
       start_period: 40s
     extends:
@@ -56,7 +56,7 @@ services:
 
   review-ms:
     container_name: review-ms
-    image: mykhailorudyk/review:v3
+    image: mykhailorudyk/review:v4
     ports:
       - "8092:8092"
     environment:
@@ -64,7 +64,7 @@ services:
     healthcheck:
       test: "curl --fail --silent localhost:8092/actuator/health/readiness | grep UP || exit 1"
       timeout: 20s
-      interval: 20s
+      interval: 30s
       retries: 30
       start_period: 40s
     extends:
@@ -73,14 +73,14 @@ services:
 
   eurekaserver:
     container_name: eurekaserver
-    image: mykhailorudyk/eurekaserver:v3
+    image: mykhailorudyk/eurekaserver:v4
     ports:
       - "8761:8761"
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
     healthcheck:
       test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
-      interval: 20s
+      interval: 30s
       timeout: 20s
       retries: 25
       start_period: 30s
@@ -93,14 +93,14 @@ services:
   
   configserver:
     container_name: configserver
-    image: mykhailorudyk/configserver:v3
+    image: mykhailorudyk/configserver:v4
     ports:
       - "8071:8071"
     environment:
       SPRING_APPLICATION_NAME: "configserver"
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1i"
-      interval: 20s
+      interval: 30s
       timeout: 20s
       retries: 25
       start_period: 30s
@@ -132,7 +132,7 @@ services:
       
   apigateway:
     container_name: apigateway
-    image: mykhailorudyk/apigateway:v3
+    image: mykhailorudyk/apigateway:v4
     ports:
       - 8072:8072
     depends_on:
@@ -240,24 +240,11 @@ services:
       - sh
       - -euc
       - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://gateway:3100
-            jsonData:
-              httpHeaderName1: "X-Scope-OrgID"
-            secureJsonData:
-              httpHeaderValue1: "tenant1"
-        EOF
         /run.sh
     ports:
       - "3000:3000"
     volumes:
-      - ../observability/grafana/datasource.yml
+      - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     healthcheck:
       test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
       interval: 10s
@@ -348,7 +335,7 @@ services:
     networks:
       - articleinsight-network
 
-  ## Prometheus
+  ### Prometheus
   prometheus:
     image: prom/prometheus:v2.45.0
     container_name: prometheus

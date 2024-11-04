@@ -1,0 +1,22 @@
+appLabel: articles-ms
+
+deploymentName: articles-deployment
+serviceName: articles-ms
+appName: articles-ms
+
+service:
+    type: ClusterIP
+    port: 8091
+    targetPort: 8091
+
+replicaCount: 1
+image:
+    repository: mykhailorudyk/articles
+    tag: v4
+
+containerPort: 8091
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true

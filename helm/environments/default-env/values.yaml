@@ -1,0 +1,10 @@
+global:
+  configMapName: articleinsight-default-configmap
+  activeProfile: default
+  rabbitmq_host: articleinsight-rabbitmq.default.svc.cluster.local
+  configServerUrl: optional:configserver:http://configserver:8071/
+  datasource:
+    url: jdbc:postgresql://articleinsight-postgres-postgresql.default.svc.cluster.local:5432/mike
+    username: mike
+    password: password
+  eurekaServerUrl: http://eurekaserver:8761/eureka/

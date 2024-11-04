@@ -1,0 +1,22 @@
+appLabel: eurekaserver
+
+deploymentName: eurekaserver-deployment
+serviceName: eurekaserver-ms
+appName: eurekaserver-ms
+
+service:
+    type: ClusterIP
+    port: 8761
+    targetPort: 8761
+
+replicaCount: 1
+image:
+    repository: mykhailorudyk/eurekaserver
+    tag: v4
+
+containerPort: 8761
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true

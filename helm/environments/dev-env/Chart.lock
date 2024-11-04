@@ -1,0 +1,21 @@
+dependencies:
+- name: articleinsight-common
+  repository: file://../../articleinsight-common
+  version: 0.1.0
+- name: articles
+  repository: file://../../articleinsight-services/articles
+  version: 0.1.0
+- name: review
+  repository: file://../../articleinsight-services/review
+  version: 0.1.0
+- name: configserver
+  repository: file://../../articleinsight-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../articleinsight-services/eurekaserver
+  version: 0.1.0
+- name: apigateway
+  repository: file://../../articleinsight-services/apigateway
+  version: 0.1.0
+digest: sha256:77e0b63f37ec2942023fbbff6905b223b7b6ba5a8b6cbe346d8df7c24a850c14
+generated: "2024-10-30T12:52:15.1244849+02:00"

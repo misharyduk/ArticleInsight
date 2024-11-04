@@ -1,0 +1,22 @@
+appLabel: review-ms
+
+deploymentName: review-deployment
+serviceName: review-ms
+appName: review-ms
+
+service:
+    type: ClusterIP
+    port: 8092
+    targetPort: 8092
+
+replicaCount: 1
+image:
+    repository: mykhailorudyk/review
+    tag: v4
+
+containerPort: 8092
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true

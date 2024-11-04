@@ -1,0 +1,22 @@
+appLabel: configserver
+
+deploymentName: configserver-deployment
+serviceName: configserver-ms
+appName: configserver-ms
+
+service:
+    type: ClusterIP
+    port: 8071
+    targetPort: 8071
+
+replicaCount: 1
+image:
+    repository: mykhailorudyk/configserver
+    tag: v4
+
+containerPort: 8071
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true

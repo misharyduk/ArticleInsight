@@ -1,0 +1,5 @@
+/database_connection/docker-compose.yml
+/docker-compose/default/.data
+/docker-compose/prod/.data
+/docker-compose/dev/.data
+/docker-compose/qa/.data

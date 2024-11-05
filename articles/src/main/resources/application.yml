@@ -3,10 +3,19 @@ server:
 spring:
   application:
     name: articles
+  profiles:
+    active:
+      - "dev"
+  config:
+    import:
+      - "application_prod.yml"
+      - "application_qa.yml"
+      - "application_dev.yml"
+      - "optional:configserver:http://localhost:8071/"
   datasource:
     url: jdbc:postgresql://localhost:5432/articleinsightdb
     username: mike
-    password: ${DB_PASSWORD}
+    password: password
   jpa:
     hibernate:
       ddl-auto: create
@@ -14,6 +23,11 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 
 logging:
   level:
@@ -23,6 +37,8 @@ logging:
         orm:
           jdbc:
             bind: trace
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 eureka:
   instance:
@@ -38,11 +54,20 @@ management:
     web:
       exposure:
         include: "*"
+  info:
+    env:
+      enabled: true
   endpoint:
     info:
       enabled: true
-
-info:
-  articles:
-    microservice-name: articles-ms
-    version: "v1.0.0"
+    health:
+      probes:
+        enabled: true
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

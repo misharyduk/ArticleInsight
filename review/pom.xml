@@ -14,6 +14,7 @@
 	<name>review</name>
 	<description>Review Microservice for Article Insight</description>
 	<url/>
+	<packaging>jar</packaging>
 	<licenses>
 		<license/>
 	</licenses>
@@ -29,6 +30,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
+		<otelVersion>1.27.0</otelVersion>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -47,6 +49,20 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry.javaagent</groupId>
+			<artifactId>opentelemetry-javaagent</artifactId>
+			<version>${otelVersion}</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -64,8 +80,17 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

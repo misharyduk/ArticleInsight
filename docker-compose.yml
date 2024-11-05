@@ -1,0 +1,97 @@
+services:
+  articleinsight-postgres:
+    container_name: articleinsight-postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - articleinsight-postgres-data:/var/lib/postgresql/data
+      - ./database_connection/create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
+    environment:
+      POSTGRES_USER: mike
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+    networks:
+      - articleinsight-network
+  
+  articleinsight-pgadmin:
+    container_name: articleinsight-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - articleinsight-pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - articleinsight-network
+  
+  articleinsight-rabbitmq:
+    container_name: articleinsight-rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - articleinsight-network
+
+  # articles-ms:
+  #   container_name: articles-ms
+  #   image: mykhailorudyk/articles:v1
+  #   ports:
+  #     - "8091:8091"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - artileinsight-network
+
+  # review-ms:
+  #   container_name: review-ms
+  #   image: mykhailorudyk/review:v1
+  #   ports:
+  #     - "8092:8092"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
+
+  # eurekaserver:
+  #   container_name: eurekaserver
+  #   image: mykhailorudyk/eurekaserver:v1
+  #   ports:
+  #     - "8761:8761"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
+  
+  # configserver:
+  #   container_name: configserver
+  #   image: mykhailorudyk/configserver:v1
+  #   ports:
+  #     - "8071:8071"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 700m
+  #   networks:
+  #     - articleinsight-network
+
+volumes:
+  articleinsight-postgres-data:
+  articleinsight-pgadmin-data:
+
+networks:
+  articleinsight-network:
+    driver: bridge

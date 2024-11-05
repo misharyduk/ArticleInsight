@@ -1,0 +1,15 @@
+{{- define "common.configmap" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.configMapName }}
+data:
+  SPRING_PROFILES_ACTIVE: {{ .Values.global.activeProfile }}
+  SPRING_RABBITMQ_HOST: {{ .Values.global.rabbitmq_host}}
+  SPRING_CONFIG_IMPORT: {{ .Values.global.configServerUrl }}
+  SPRING_DATASOURCE_URL: {{ .Values.global.datasource.url }}
+  EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE: {{ .Values.global.eurekaServerUrl }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.global.datasource.username }}
+  SPRING_DATASOURCE_PASSWORD: {{ .Values.global.datasource.password }}
+{{- end -}}
+  

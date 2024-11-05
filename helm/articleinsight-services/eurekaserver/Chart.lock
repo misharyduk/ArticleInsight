@@ -1,0 +1,6 @@
+dependencies:
+- name: articleinsight-common
+  repository: file://../../articleinsight-common
+  version: 0.1.0
+digest: sha256:799d20407495a436fef4d4c1769c414cdda977369c8f7e132b0e15062227af13
+generated: "2024-10-30T12:23:41.4007867+02:00"

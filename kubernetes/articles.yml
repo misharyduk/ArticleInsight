@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articles-deployment
+  labels:
+    app: articles-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: articles-ms
+  template:
+    metadata:
+      labels:
+        app: articles-ms
+    spec:
+      containers:
+      - name: articles-ms
+        image: mykhailorudyk/articles:v4
+        ports:
+        - containerPort: 8091
+        env:
+        - name: SPRING_APPLICATION_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: ARTICLES_APPLICATION_NAME
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_PROFILES_ACTIVE
+        - name: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+        - name: SPRING_CONFIG_IMPORT
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_CONFIG_IMPORT
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: articleinsight-configmap
+              key: SPRING_DATASOURCE_PASSWORD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: articles-ms
+spec:
+  selector:
+    app: articles-ms
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8091
+    targetPort: 8091

@@ -15,12 +15,12 @@ public class GatewayConfig {
                         .path("/articleinsight/articles/**")
                         .filters(f -> f.rewritePath("/articleinsight/articles/(?<segment>.*)",
                                                     "/${segment}"))
-                        .uri("lb://ARTICLES"))
+                        .uri("lb://ARTICLES-MS"))
                 .route(p -> p
-                        .path("/articlesinsight/review/**")
-                        .filters(f -> f.rewritePath("/articlesinsight/review/(?<segment>.*)",
+                        .path("/articleinsight/review/**")
+                        .filters(f -> f.rewritePath("/articleinsight/review/(?<segment>.*)",
                                                     "/${segment}"))
-                        .uri("lb://REVIEW"))
+                        .uri("lb://REVIEW-MS"))
                 .build();
     }
 

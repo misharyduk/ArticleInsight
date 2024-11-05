@@ -2,49 +2,76 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: {{ .Values.deploymentName }}
-    labels:
-        app: {{ .Values.appLabel }}
+  name: {{ .Values.deploymentName }}
+  labels:
+    app: {{ .Values.appLabel }}
 spec:
-    replicas: {{ .Values.replicaCount }}
-    selector:
-        matchLabels:
-            app: {{ .Values.appLabel }}
-    template:
-        metadata:
-            labels:
-                app: {{ .Values.appLabel }}
-        spec:
-            containers:
-            - name: {{ .Values.appLabel }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-              ports:
-              - containerPort: {{ .Values.containerPort }}
-                protocol: TCP
-              env:
-              {{ if .Values.appname_enabled }}
-              - name: SPRING_APPLICATION_NAME
-                value: {{ .Values.appName }}
-              {{ end }}  
-              {{ if .Values.profile_enabled }}
-              - name: SPRING_PROFILES_ACTIVE
-                valueFrom:
-                    configMapKeyRef:
-                        name: {{ .Values.global.configMapName }}
-                        key: SPRING_PROFILES_ACTIVE
-              {{ end }}
-              {{ if .Values.config_enabled }}
-              - name: SPRING_CONFIG_IMPORT
-                valueFrom:
-                    configMapKeyRef:
-                        name: {{ .Values.global.configMapName }}
-                        key: SPRING_CONFIG_IMPORT
-              {{ end }}
-              {{ if .Values.eureka_enabled }}
-              - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-                valueFrom:
-                    configMapKeyRef:
-                        name: {{ .Values.global.configMapName }}
-                        key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              {{ end }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+      matchLabels:
+        app: {{ .Values.appLabel }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appLabel }}
+    spec:
+      containers:
+      - name: {{ .Values.appLabel }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+          protocol: TCP
+        {{ if .Values.probe_eureka_enabled }}
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "curl --fail --silent eurekaserver-ms:8761/actuator/health/readiness | grep UP || exit 1"
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        {{ end }}
+        {{ if .Values.probe_article_microservice_enabled }}
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c 
+            - "((curl --fail --silent articles-ms:8091/actuator/health/readiness | grep UP) && (curl --fail --silent review-ms:8092/actuator/health/readiness | grep UP)) ||  exit 1"
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        {{ end }}
+        env:
+        {{ if .Values.appname_enabled }}
+        - name: SPRING_APPLICATION_NAME
+          value: {{ .Values.appName }}
+        {{ end }}  
+        {{ if .Values.profile_enabled }}
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_PROFILES_ACTIVE
+        {{ end }}
+        {{ if .Values.config_enabled }}
+        - name: SPRING_CONFIG_IMPORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_CONFIG_IMPORT
+        {{ end }}
+        {{ if .Values.eureka_enabled }}
+        - name: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
+        {{ end }}
+        {{ if .Values.database_enabled }}
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_URL
+        {{ end }}
 {{- end -}}

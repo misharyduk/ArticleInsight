@@ -79,7 +79,7 @@ pipeline {
                     sleep time: 30, unit: 'SECONDS'
                     sh 'helm upgrade articleinsight --install helm/environments/default-env'
                     sleep time: 120, unit: 'SECONDS'
-                    sh 'kubectl port-forward $(kubectl get pods | grep -oh "apigateway-deployment-\\w*-\\w*") 8072:8072'
+                    sh 'kubectl port-forward $(kubectl get pods | grep -oh "apigateway-deployment-\\w*-\\w*") 8072:8072 &'
                 }
             }
         }

@@ -5,14 +5,14 @@ serviceName: apigateway-ms
 appName: apigateway-ms
 
 service:
-  type: LoadBalancer
+  type: NodePort
   port: 8072
   targetPort: 8072
 
 replicaCount: 1
 image:
   repository: mykhailorudyk/apigateway
-  tag: v5
+  tag: v6
 
 containerPort: 8072
 
@@ -21,5 +21,7 @@ profile_enabled: true
 config_enabled: true
 eureka_enabled: true
 database_enabled: false
+rabbitmq_enabled: true
 
 probe_article_microservice_enabled: true
+probe_eureka_and_configserver_enabled: false

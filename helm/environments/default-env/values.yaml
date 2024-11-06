@@ -2,7 +2,7 @@ global:
   configMapName: articleinsight-default-configmap
   activeProfile: default
   rabbitmq_host: articleinsight-rabbitmq.default.svc.cluster.local
-  configServerUrl: optional:configserver-ms:http://configserver:8071/
+  configServerUrl: optional:configserver:http://configserver-ms:8071/
   datasource:
     url: jdbc:postgresql://articleinsight-postgres-postgresql.default.svc.cluster.local:5432/mike
     username: mike

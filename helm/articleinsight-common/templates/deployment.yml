@@ -21,14 +21,15 @@ spec:
         ports:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
-        {{ if .Values.probe_eureka_enabled }}
+        {{ if .Values.probe_eureka_and_configserver_enabled }}
         livenessProbe:
           exec:
             command:
             - sh
             - -c
+            # - "curl --fail --silent -X POST localhost:{{ .Values.service.port }}/actuator/refresh ||  exit 1"
             - "curl --fail --silent eurekaserver-ms:8761/actuator/health/readiness | grep UP || exit 1"
-          initialDelaySeconds: 30
+          initialDelaySeconds: 40
           periodSeconds: 20
         {{ end }}
         {{ if .Values.probe_article_microservice_enabled }}
@@ -37,8 +38,10 @@ spec:
             command:
             - sh
             - -c 
-            - "((curl --fail --silent articles-ms:8091/actuator/health/readiness | grep UP) && (curl --fail --silent review-ms:8092/actuator/health/readiness | grep UP)) ||  exit 1"
-          initialDelaySeconds: 30
+            - "curl --fail --silent articles-ms:8091/actuator/health/readiness | grep UP"
+            - "curl --fail --silent review-ms:8092/actuator/health/readiness | grep UP"
+            # - "((curl --fail --silent articles-ms:8091/actuator/health/readiness | grep UP) && (curl --fail --silent review-ms:8092/actuator/health/readiness | grep UP)) ||  exit 1"
+          initialDelaySeconds: 100
           periodSeconds: 20
         {{ end }}
         env:
@@ -53,13 +56,14 @@ spec:
               name: {{ .Values.global.configMapName }}
               key: SPRING_PROFILES_ACTIVE
         {{ end }}
-        {{ if .Values.config_enabled }}
+        # {{ if .Values.config_enabled }}
         - name: SPRING_CONFIG_IMPORT
-          valueFrom:
-            configMapKeyRef:
-              name: {{ .Values.global.configMapName }}
-              key: SPRING_CONFIG_IMPORT
-        {{ end }}
+          value: optional:configserver:http://configserver-ms:8071/
+          # valueFrom:
+            # configMapKeyRef:
+              # name: {{ .Values.global.configMapName }}
+              # key: SPRING_CONFIG_IMPORT
+        # {{ end }}
         {{ if .Values.eureka_enabled }}
         - name: EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE
           valueFrom:
@@ -73,5 +77,12 @@ spec:
             configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_DATASOURCE_URL
+        {{ end }}
+        {{ if .Values.rabbitmq_enabled }}
+        - name: SPRING_RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_HOST
         {{ end }}
 {{- end -}}

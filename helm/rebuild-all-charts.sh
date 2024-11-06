@@ -1,33 +1,77 @@
 #! /bin/bash
 
-COMMON_CHART="articleinsight-common"
-
 MICROSERVICES_CHARTS=("articles", "apigateway", "eurekaserver", "configserver", "review")
 
 ENVIRONMENT_CHARTS=("default-env", "prod-env", "dev-env", "qa-env")
 
-if [ -d "$COMMON_CHART" ]; then
-	echo "Dependnencies build for $COMMON_CHART";
+echo "Dependnencies build for articleinsight-common";
+cd articleinsight-common
+helm dependencies build .
+cd ..	
 
-	cd "$COMMON_CHART" || { echo "No such directory"; exit 1; }
+echo ""
 
-	helm dependencies build .
+cd articleinsight-services;
+echo "Dependnencies build for APIGATEWAY";
+cd apigateway
+helm dependencies build . 
+cd ..   
 
-	cd ..	
-fi
+echo ""
 
-for chart in "${MICROSERVICES_CHARTS[@]}"; do
-	if [ -d "articleinsight-services/$chart" ]; then
-		echo "Dependencies build for $chart"
+echo "Dependnencies build for ARTICLES";
+cd articles
+helm dependencies build . 
+cd ..
 
-		cd "articleinsight-services/$chart" || { echo "No such directory"; exit 1; }
+echo ""
 
-		helm dependencies build .
+echo "Dependnencies build for EUREKASERVER";
+cd eurekaserver
+helm dependencies build . 
+cd ..
 
-		cd ..
+echo ""
 
-	fi
+echo "Dependnencies build for CONFIGSERVER";
+cd configserver
+helm dependencies build . 
+cd ..
 
-done
+echo ""
+
+echo "Dependnencies build for REVIEW";
+cd review
+helm dependencies build . 
+cd ..
+
+echo ""
+
+cd ../environments
+echo "Dependnencies build for DEFAULT environment";
+cd default-env
+helm dependencies build . 
+cd ..
+
+echo ""
+
+echo "Dependnencies build for DEV environment";
+cd dev-env
+helm dependencies build . 
+cd ..
+
+echo ""
+
+echo "Dependnencies build for PROD environment";
+cd prod-env
+helm dependencies build . 
+cd ..
+
+echo ""
+
+echo "Dependnencies build for QA environment";
+cd qa-env
+helm dependencies build . 
+cd ..
 
 cd ..

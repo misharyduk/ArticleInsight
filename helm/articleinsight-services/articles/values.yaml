@@ -12,7 +12,7 @@ service:
 replicaCount: 1
 image:
   repository: mykhailorudyk/articles
-  tag: v4
+  tag: v5
 
 containerPort: 8091
 
@@ -21,5 +21,7 @@ profile_enabled: true
 config_enabled: true
 eureka_enabled: true
 database_enabled: true
+rabbitmq_enabled: true
 
-probe_eureka_enabled: true
+probe_article_microservice_enabled: false
+probe_eureka_and_configserver_enabled: true

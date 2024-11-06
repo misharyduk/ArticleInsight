@@ -6,7 +6,7 @@ metadata:
 data:
   SPRING_PROFILES_ACTIVE: {{ .Values.global.activeProfile }}
   SPRING_RABBITMQ_HOST: {{ .Values.global.rabbitmq_host}}
-  SPRING_CONFIG_IMPORT: {{ .Values.global.configServerUrl }}
+  SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver-ms:8071/"
   SPRING_DATASOURCE_URL: {{ .Values.global.datasource.url }}
   EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE: {{ .Values.global.eurekaServerUrl }}
   SPRING_DATASOURCE_USERNAME: {{ .Values.global.datasource.username }}

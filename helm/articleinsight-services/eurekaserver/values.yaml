@@ -21,3 +21,7 @@ profile_enabled: true
 config_enabled: true
 eureka_enabled: true
 database_enabled: false
+rabbitmq_enabled: true
+
+probe_article_microservice_enabled: false
+probe_eureka_and_configserver_enabled: false

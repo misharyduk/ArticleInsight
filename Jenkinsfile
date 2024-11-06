@@ -80,7 +80,7 @@ pipeline {
                     sh 'helm upgrade articleinsight --install helm/environments/default-env'
                     sleep time: 120, unit: 'SECONDS'
                     
-                    sh 'APIGATEWAY_POD_NAME=$(kubectl get pods | grep -oh "apigateway-deployment-\w*-\w*")'
+                    sh 'APIGATEWAY_POD_NAME=$(kubectl get pods | grep -oh "apigateway-deployment-\\w*-\\w*")'
                     sh 'kubectl port-forward $APIGATEWAY_POD_NAME 8072:8072'
                 }
             }

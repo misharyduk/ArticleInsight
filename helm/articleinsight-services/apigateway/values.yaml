@@ -5,7 +5,7 @@ serviceName: apigateway-ms
 appName: apigateway-ms
 
 service:
-  type: NodePort
+  type: LoadBalancer
   port: 8072
   targetPort: 8072
 

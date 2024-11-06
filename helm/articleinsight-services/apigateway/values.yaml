@@ -12,7 +12,7 @@ service:
 replicaCount: 1
 image:
   repository: mykhailorudyk/apigateway
-  tag: v6
+  tag: latest
 
 containerPort: 8072
 

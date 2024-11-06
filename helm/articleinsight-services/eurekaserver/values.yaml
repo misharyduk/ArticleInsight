@@ -12,7 +12,7 @@ service:
 replicaCount: 1
 image:
   repository: mykhailorudyk/eurekaserver
-  tag: v4
+  tag: latest
 
 containerPort: 8761
 

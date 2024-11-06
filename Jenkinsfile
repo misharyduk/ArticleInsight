@@ -78,8 +78,8 @@ pipeline {
                     sh 'helm upgrade grafana --install helm/grafana'
                     sleep time: 30, unit: 'SECONDS'
                     sh 'helm upgrade articleinsight --install helm/environments/default-env'
-                    sleep time: 150, unit: 'SECONDS'
-                    sh 'sudo minikube tunnel'
+                    sleep time: 50, unit: 'SECONDS'
+                    sh 'sudo minikube tunnel &'
                     sleep time: 50, unit: 'SECONDS'
                 }
             }

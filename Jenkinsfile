@@ -67,5 +67,23 @@ pipeline {
                 }
             }   
         }
+        stage('Install Helm charts into Kubernetes cluster'){
+            steps{
+                script{
+                    sh 'helm upgrade articleinsight-postgres --install helm/postgresql'
+                    sh 'helm upgrade articleinsight-rabbitmq --install rabbitmq'
+                    sh 'helm upgrade loki --install helm/grafana-loki'
+                    sh 'helm upgrade prometheus --install helm/kube-prometheus'
+                    sleep time: 40, unit: 'SECONDS'
+                    sh 'helm upgrade grafana --install helm/grafana'
+                    sleep time: 30, unit: 'SECONDS'
+                    sh 'helm upgrade articleinsight --install helm/environments/default-env'
+                    sleep time: 120, unit: 'SECONDS'
+                    
+                    sh 'APIGATEWAY_POD_NAME=$(kubectl get pods | grep -oh "apigateway-deployment-\w*-\w*")'
+                    sh 'kubectl port-forward $APIGATEWAY_POD_NAME 8072:8072'
+                }
+            }
+        }
     }
 }

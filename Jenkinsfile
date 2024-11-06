@@ -71,7 +71,7 @@ pipeline {
             steps{
                 script{
                     sh 'helm upgrade articleinsight-postgres --install helm/postgresql'
-                    sh 'helm upgrade articleinsight-rabbitmq --install rabbitmq'
+                    sh 'helm upgrade articleinsight-rabbitmq --install helm/rabbitmq'
                     sh 'helm upgrade loki --install helm/grafana-loki'
                     sh 'helm upgrade prometheus --install helm/kube-prometheus'
                     sleep time: 40, unit: 'SECONDS'

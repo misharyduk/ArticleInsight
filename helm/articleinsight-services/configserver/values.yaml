@@ -5,9 +5,10 @@ serviceName: configserver-ms
 appName: configserver-ms
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8071
   targetPort: 8071
+  loadBalancerIP: 10.10.10.10
 
 replicaCount: 1
 image:

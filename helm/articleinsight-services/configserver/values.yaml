@@ -5,10 +5,10 @@ serviceName: configserver-ms
 appName: configserver-ms
 
 service:
-  type: LoadBalancer
+  type: NodePort
   port: 8071
   targetPort: 8071
-  loadBalancerIP: 10.10.10.10
+  nodePort: 308071
 
 replicaCount: 1
 image:

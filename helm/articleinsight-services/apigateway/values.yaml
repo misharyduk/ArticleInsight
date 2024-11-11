@@ -5,10 +5,10 @@ serviceName: apigateway-ms
 appName: apigateway-ms
 
 service:
-  type: LoadBalancer
+  type: NodePort
   port: 8072
   targetPort: 8072
-  loadBalancerIP: 10.11.11.11
+  nodePort: 30000
 
 replicaCount: 1
 image:

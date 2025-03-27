@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.mike.articleinsight.review.comments.constants.CommentConstants.*;
+
 @RestController
 @RequestMapping("/api/v1/review/comments")
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<String> postComment(@RequestBody CommentRequestDto commentRequestDto){
         commentService.postComment(commentRequestDto);
-        return ResponseEntity.ok("Comment has been successfully posted");
+        return ResponseEntity.ok(COMMENT_201_MESSAGE);
     }
 
 
